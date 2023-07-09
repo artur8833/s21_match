@@ -2,15 +2,13 @@
 
 long double s21_floor(double x) {
   long double res;
-  if (S21_IS_NAN(x))
+  if (x == S21_INF_NEGATIVE || x == S21_INF_POSITIVE || x == 0)
+    res = x;
+  else if (x != x)
     res = S21_NAN;
-  else if (S21_IS_INF(x)) {
-    if (x == S21_INF_POSITIVE) res = S21_INF_POSITIVE;
-    if (x == S21_INF_NEGATIVE) res = S21_ZERO_POSITIVE;
-  } else {
-    long double floor_x = (long long int)x;  //приводим к int
-    if (x < 0) floor_x -= 1;  //если число отрицательное + (-1)
-    res = floor_x;
+  else {
+    res = (long double)(long long)x;
+    if (res > x) res -= 1.0;
   }
   return res;
 }

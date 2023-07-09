@@ -1,85 +1,46 @@
+#include <stdint.h>
+
 #include "../s21_math.h"
 
-#define OK 1000.0;
+int s21_signbit(double x) {
+  union {
+    double d;
+    uint64_t i;
+  } u;
+  u.d = x;
+  return (u.i >> 63) & 1;
+}
 
-int isInt(double d) { return (d == (int)d); }
-
-double helper(double base, double exp) {
-  double res = OK;
-  if (base == 0.0) {
-    if (S21_IS_NAN(exp)) {
-      res = S21_NAN;
-    } else if (isNEG_INF(exp)) {
-      res = S21_INF_POSITIVE;
-    } else if (exp == 0.0) {
-      res = 1.0;
-    } else if (exp < 0) {
-      res = S21_INF_POSITIVE;
-    }
-  } else if (base == 1.0) {
+long double s21_pow(double x, double y) {
+  long double res = 1.0;
+  long double fabs_y = s21_fabs(y);
+  int odd = (fabs_y / 2) > s21_floor(fabs_y / 2);
+  if (((x < 0 && x != S21_INF_POSITIVE) && y != s21_floor(y)) ||
+      (x != x || y != y)) {
+    res = S21_NAN;
+  } else if ((x == 0 && y > 0) || (s21_fabs(x) > 1 && y == S21_INF_NEGATIVE) ||
+             (s21_fabs(x) < 1 && y == S21_INF_POSITIVE) ||
+             (x == S21_INF_NEGATIVE && y < 0) ||
+             (x == S21_INF_POSITIVE && y < 0)) {
+    res = 0.0;
+  } else if ((x == -1 && (y == S21_INF_POSITIVE || y == S21_INF_NEGATIVE)) ||
+             y == 0 || x == 1) {
     res = 1.0;
-  } else if (base == -1.0) {
-    if (isPOS_INF(exp) || isNEG_INF(exp)) {
-      res = 1.0;
-    }
-  } else if (!isInt(base) && !isPOS_INF(base) && !isNEG_INF(base)) {
-    if (isPOS_INF(exp)) {
-      res = 0.0;
-    } else if (isNEG_INF(exp)) {
-      res = S21_INF_POSITIVE;
-    }
-  } else if (isInt(base)) {
-    if (isPOS_INF(exp) || isNEG_INF(exp)) {
-      res = S21_INF_POSITIVE;
-    }
-  } else if (isPOS_INF(base)) {
-    if (exp == 0.0) {
-      res = 1.0;
-    } else if (exp > 0 && isInt(exp)) {
-      res = S21_INF_POSITIVE;
-    } else if (isPOS_INF(exp)) {
-      res = S21_INF_POSITIVE;
-    } else if (S21_IS_NAN(exp)) {
-      res = S21_NAN;
-    }
-  } else if (isNEG_INF(base)) {
-    if (exp == 0.0) {
-      res = 1.0;
-    } else if (exp > 0 && isInt(exp)) {
-      res = S21_INF_NEGATIVE;
-    } else if (isPOS_INF(exp)) {
-      res = S21_INF_POSITIVE;
-    } else if (S21_IS_NAN(exp)) {
-      res = S21_NAN;
-    }
+  } else if (((s21_fabs(x) < 1 && x != 0) && y == S21_INF_NEGATIVE) ||
+             (s21_fabs(x) > 1 && y == S21_INF_POSITIVE) ||
+             (x == S21_INF_POSITIVE && y > 0)) {
+    res = S21_INF_POSITIVE;
+  } else if (x == S21_INF_NEGATIVE && y > 0) {
+    (y / 2 > s21_floor(y / 2)) ? (res = S21_INF_NEGATIVE)
+                               : (res = S21_INF_POSITIVE);
+  } else if (x == 0 && y < 0) {
+    int x_sign = s21_signbit(x);
+    ((x_sign != 0 && !odd) || (odd && x_sign == 0)) ? (res = S21_INF_POSITIVE)
+                                                    : (res = S21_INF_NEGATIVE);
+  } else {
+    double x_fabs = s21_fabs(x);
+    res = s21_exp(y * s21_log(x_fabs));
+    if (odd && x < 0) res = -res;
   }
   return res;
-}
-
-long double fast_pow(double base, long long int exp) {
-  long double ans = 1.0;
-  long long copy = s21_fabs(exp);
-  while (copy) {
-    ans *= base;
-    copy--;
-  }
-  return (exp < 0) ? 1.0 / ans : ans;
-}
-
-long double s21_pow(double base, double exp) {
-  long double ans = 1.0;
-  if (helper(base, exp) == 1000.0) {
-    if (isInt(exp)) {
-      ans = fast_pow(base, exp);
-    } else {
-      if (base < 0) {
-        ans = S21_NAN;
-      } else {
-        ans = s21_exp(exp * s21_log(base));
-      }
-    }
-  } else {
-    ans = helper(base, exp);
-  }
-  return ans;
 }

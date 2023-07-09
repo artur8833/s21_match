@@ -2,27 +2,21 @@
 
 long double s21_exp(double x) {
   long double res;
-
-  if (S21_IS_NAN(x))
+  if (x != x)
     res = S21_NAN;
-  else if (S21_IS_INF(x)) {
-    if (x == S21_INF_POSITIVE) res = S21_INF_POSITIVE;
-    if (x == S21_INF_NEGATIVE) res = S21_ZERO_POSITIVE;
-  } else {
-    long double add_value = 1;
-    long double series = 1;
-    long double i = 1;
-
-    while (s21_fabs(add_value) > S21_EPS) {
-      add_value *= x / i;
-      i += 1;
-      series += add_value;
-      if (series > S21_DBL_MAX) {
-        series = S21_INF_POSITIVE;
-        break;
-      }
+  else if (x == S21_INF_POSITIVE)
+    res = S21_INF_POSITIVE;
+  else if (x == S21_INF_NEGATIVE)
+    res = 0.0;
+  else {
+    long double comp = 1.0;
+    res = 1.0;
+    double temp_x = s21_fabs(x);
+    for (int i = 1; i <= 1600; i++) {
+      comp *= temp_x / i;
+      res += comp;
     }
-    res = series;
+    if (x < 0) res = 1 / res;
   }
   return res;
 }
