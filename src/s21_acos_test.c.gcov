@@ -1,0 +1,31 @@
+        -:    0:Source:unit_tests/s21_acos_test.c
+        -:    1:#include "s21_test.h"
+        -:    2:
+        1:    3:START_TEST(acosTest1) {
+       1*:    4:  ck_assert_double_eq(s21_acos(1.0), acos(1.0));
+       1*:    5:  ck_assert_double_eq(s21_acos(-1.0), acos(-1.0));
+       1*:    6:  ck_assert(S21_IS_NAN(s21_acos(NAN)) == S21_IS_NAN(acos(NAN)));
+       1*:    7:  ck_assert(S21_IS_NAN(s21_acos(3)) == S21_IS_NAN(acos(3)));
+       1*:    8:  ck_assert(S21_IS_NAN(s21_acos(INFINITY)) == S21_IS_NAN(acos(INFINITY)));
+        1:    9:}
+        -:   10:END_TEST;
+        -:   11:
+        1:   12:START_TEST(acosTest2) {
+       1*:   13:  ck_assert_double_eq_tol(s21_acos(0.0), acos(0.0), 0.000001);
+       1*:   14:  ck_assert_double_eq_tol(s21_acos(0.23234), acos(0.23234), 0.000001);
+       1*:   15:  ck_assert_double_eq_tol(s21_acos(-0.23234), acos(-0.23234), 0.000001);
+       1*:   16:  ck_assert_double_eq_tol(s21_acos(0.0002), acos(0.0002), 0.000001);
+       1*:   17:  ck_assert_double_eq_tol(s21_acos(-0.0002), acos(-0.0002), 0.000001);
+        1:   18:}
+        -:   19:END_TEST;
+        -:   20:
+       36:   21:Suite *acosTest(void) {
+       36:   22:  Suite *s = suite_create("\033[45mAcos test\033[0m");
+       36:   23:  TCase *tc = tcase_create("Acos test");
+        -:   24:
+       36:   25:  tcase_add_test(tc, acosTest1);
+       36:   26:  tcase_add_test(tc, acosTest2);
+        -:   27:
+       36:   28:  suite_add_tcase(s, tc);
+       36:   29:  return s;
+        -:   30:}

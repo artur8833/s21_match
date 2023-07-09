@@ -1,0 +1,19 @@
+        -:    0:Source:math/s21_sqrt.c
+        -:    1:#include "../s21_math.h"
+        -:    2:
+       31:    3:long double s21_sqrt(double x) {
+        -:    4:  long double res;
+       31:    5:  if (S21_IS_NAN(x))
+        2:    6:    res = S21_NAN;
+       29:    7:  else if ((1 / x == 1 / 0.0))
+        3:    8:    res = S21_ZERO_POSITIVE;
+       26:    9:  else if ((1 / x == 1 / -0.0))
+        2:   10:    res = S21_ZERO_NEGATIVE;
+       24:   11:  else if (x == S21_INF_POSITIVE)
+        2:   12:    res = S21_INF_POSITIVE;
+       22:   13:  else if (x < 0)
+        3:   14:    res = -S21_NAN;
+        -:   15:  else
+       19:   16:    res = s21_pow(x, 0.5);
+       31:   17:  return res;
+        -:   18:}

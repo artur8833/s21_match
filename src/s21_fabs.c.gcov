@@ -1,0 +1,20 @@
+        -:    0:Source:math/s21_fabs.c
+        -:    1:#include "../s21_math.h"
+        -:    2:
+  3331865:    3:long double s21_fabs(double x) {
+        -:    4:  long double res;
+  3331865:    5:  if (S21_IS_NAN(x))
+        2:    6:    res = S21_NAN;
+  3331863:    7:  else if (x == S21_ZERO_NEGATIVE)
+       17:    8:    res = S21_ZERO_POSITIVE;
+  3331846:    9:  else if (S21_IS_INF(x))
+        2:   10:    res = S21_INF_POSITIVE;
+        -:   11:  else {
+  3331844:   12:    if (x > 0) {
+  3283982:   13:      res = x;
+        -:   14:    } else {
+    47862:   15:      res = -x;
+        -:   16:    }
+        -:   17:  }
+  3331865:   18:  return res;
+        -:   19:}

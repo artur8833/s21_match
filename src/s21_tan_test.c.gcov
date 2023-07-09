@@ -1,0 +1,29 @@
+        -:    0:Source:unit_tests/s21_tan_test.c
+        -:    1:#include "s21_test.h"
+        -:    2:
+        1:    3:START_TEST(tanTest1) {
+        1:    4:  int testValue1 = 1000;
+        1:    5:  int testValue2 = -3003;
+        1:    6:  double testValue3 = 0.0005;
+        1:    7:  double testValue4 = 0.98439849385;
+        1:    8:  double testValue5 = S21_PI;
+        -:    9:
+       1*:   10:  ck_assert_ldouble_eq_tol(s21_tan(testValue1), tan(testValue1), 1e-6);
+       1*:   11:  ck_assert_ldouble_eq_tol(s21_tan(testValue2), tan(testValue2), 1e-6);
+       1*:   12:  ck_assert_ldouble_eq_tol(s21_tan(testValue3), tan(testValue3), 1e-6);
+       1*:   13:  ck_assert_ldouble_eq_tol(s21_tan(testValue4), tan(testValue4), 1e-6);
+       1*:   14:  ck_assert_ldouble_eq_tol(s21_tan(testValue5), tan(testValue5), 1e-6);
+       1*:   15:  ck_assert(S21_IS_NAN(s21_tan(NAN)) == S21_IS_NAN(tan(NAN)));
+       1*:   16:  ck_assert(S21_IS_NAN(s21_tan(INFINITY)) == S21_IS_NAN(tan(INFINITY)));
+        1:   17:}
+        -:   18:END_TEST
+        -:   19:
+       36:   20:Suite *tanTest(void) {
+       36:   21:  Suite *s = suite_create("\033[45mTan test\033[0m");
+       36:   22:  TCase *tc = tcase_create("Tan test");
+        -:   23:
+       36:   24:  tcase_add_test(tc, tanTest1);
+        -:   25:
+       36:   26:  suite_add_tcase(s, tc);
+       36:   27:  return s;
+        -:   28:}

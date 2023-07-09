@@ -1,0 +1,23 @@
+        -:    0:Source:math/s21_acos.c
+        -:    1:#include "../s21_math.h"
+        -:    2:
+       13:    3:long double s21_acos(double x) {
+       13:    4:  long double res = 0;
+        -:    5:
+       13:    6:  if (S21_IS_NAN(x) || S21_IS_INF(x))
+        4:    7:    res = S21_NAN;
+        9:    8:  else if (x == 1)
+        1:    9:    res = 0;
+        8:   10:  else if (x == 0)
+        1:   11:    res = (S21_PI / 2);
+        7:   12:  else if (x == -1)
+        1:   13:    res = S21_PI;
+        6:   14:  else if (x > 0 && x < 1) {
+        2:   15:    res = s21_atan((s21_sqrt(1 - (x * x)) / x));
+        4:   16:  } else if (x > -1 && 0 > x) {
+        2:   17:    res = S21_PI + s21_atan((s21_sqrt(1 - (x * x)) / x));
+        -:   18:  } else {
+        2:   19:    res = S21_NAN;
+        -:   20:  }
+       13:   21:  return res;
+        -:   22:}

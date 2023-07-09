@@ -1,0 +1,17 @@
+        -:    0:Source:math/s21_floor.c
+        -:    1:#include "../s21_math.h"
+        -:    2:
+      310:    3:long double s21_floor(double x) {
+        -:    4:  long double res;
+      310:    5:  if (S21_IS_NAN(x))
+        1:    6:    res = S21_NAN;
+      309:    7:  else if (S21_IS_INF(x)) {
+        4:    8:    if (x == S21_INF_POSITIVE) res = S21_INF_POSITIVE;
+        4:    9:    if (x == S21_INF_NEGATIVE) res = S21_ZERO_POSITIVE;
+        -:   10:  } else {
+      305:   11:    long double floor_x = (long long int)x;  //приводим к int
+      305:   12:    if (x < 0) floor_x -= 1;  //если число отрицательное + (-1)
+      305:   13:    res = floor_x;
+        -:   14:  }
+      310:   15:  return res;
+        -:   16:}

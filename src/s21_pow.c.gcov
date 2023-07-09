@@ -1,0 +1,86 @@
+        -:    0:Source:math/s21_pow.c
+        -:    1:#include "../s21_math.h"
+        -:    2:
+        -:    3:#define OK 1000.0;
+        -:    4:
+    19683:    5:int isInt(double d) { return (d == (int)d); }
+        -:    6:
+    13100:    7:double helper(double base, double exp) {
+    13100:    8:  double res = OK;
+    13100:    9:  if (base == 0.0) {
+     1014:   10:    if (S21_IS_NAN(exp)) {
+        4:   11:      res = S21_NAN;
+     1010:   12:    } else if (isNEG_INF(exp)) {
+        4:   13:      res = S21_INF_POSITIVE;
+     1006:   14:    } else if (exp == 0.0) {
+        2:   15:      res = 1.0;
+     1004:   16:    } else if (exp < 0) {
+        4:   17:      res = S21_INF_POSITIVE;
+        -:   18:    }
+    12086:   19:  } else if (base == 1.0) {
+        2:   20:    res = 1.0;
+    12084:   21:  } else if (base == -1.0) {
+     6504:   22:    if (isPOS_INF(exp) || isNEG_INF(exp)) {
+        4:   23:      res = 1.0;
+        -:   24:    }
+     5580:   25:  } else if (!isInt(base) && !isPOS_INF(base) && !isNEG_INF(base)) {
+     4529:   26:    if (isPOS_INF(exp)) {
+        4:   27:      res = 0.0;
+     4525:   28:    } else if (isNEG_INF(exp)) {
+        4:   29:      res = S21_INF_POSITIVE;
+        -:   30:    }
+     1051:   31:  } else if (isInt(base)) {
+     1019:   32:    if (isPOS_INF(exp) || isNEG_INF(exp)) {
+        4:   33:      res = S21_INF_POSITIVE;
+        -:   34:    }
+       32:   35:  } else if (isPOS_INF(base)) {
+       16:   36:    if (exp == 0.0) {
+        4:   37:      res = 1.0;
+       12:   38:    } else if (exp > 0 && isInt(exp)) {
+        4:   39:      res = S21_INF_POSITIVE;
+        8:   40:    } else if (isPOS_INF(exp)) {
+        4:   41:      res = S21_INF_POSITIVE;
+        4:   42:    } else if (S21_IS_NAN(exp)) {
+        4:   43:      res = S21_NAN;
+        -:   44:    }
+       16:   45:  } else if (isNEG_INF(base)) {
+       16:   46:    if (exp == 0.0) {
+        4:   47:      res = 1.0;
+       12:   48:    } else if (exp > 0 && isInt(exp)) {
+        4:   49:      res = S21_INF_NEGATIVE;
+        8:   50:    } else if (isPOS_INF(exp)) {
+        4:   51:      res = S21_INF_POSITIVE;
+        4:   52:    } else if (S21_IS_NAN(exp)) {
+        4:   53:      res = S21_NAN;
+        -:   54:    }
+        -:   55:  }
+    13100:   56:  return res;
+        -:   57:}
+        -:   58:
+    13011:   59:long double fast_pow(double base, long long int exp) {
+    13011:   60:  long double ans = 1.0;
+    13011:   61:  long long copy = s21_fabs(exp);
+  4884802:   62:  while (copy) {
+  4871791:   63:    ans *= base;
+  4871791:   64:    copy--;
+        -:   65:  }
+    13011:   66:  return (exp < 0) ? 1.0 / ans : ans;
+        -:   67:}
+        -:   68:
+    13068:   69:long double s21_pow(double base, double exp) {
+    13068:   70:  long double ans = 1.0;
+    13068:   71:  if (helper(base, exp) == 1000.0) {
+    13036:   72:    if (isInt(exp)) {
+    13011:   73:      ans = fast_pow(base, exp);
+        -:   74:    } else {
+       25:   75:      if (base < 0) {
+        2:   76:        ans = S21_NAN;
+        -:   77:      } else {
+       23:   78:        ans = s21_exp(exp * s21_log(base));
+        -:   79:      }
+        -:   80:    }
+        -:   81:  } else {
+       32:   82:    ans = helper(base, exp);
+        -:   83:  }
+    13068:   84:  return ans;
+        -:   85:}

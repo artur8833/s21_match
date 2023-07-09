@@ -1,0 +1,23 @@
+        -:    0:Source:math/s21_ceil.c
+        -:    1:#include "../s21_math.h"
+        -:    2:
+      416:    3:long double s21_ceil(double x) {
+        -:    4:  long double res;
+      416:    5:  long double ceil_x = (long long int)x;
+      416:    6:  if ((x == (int)x) || x == S21_ZERO_NEGATIVE || x == S21_ZERO_POSITIVE ||
+      412:    7:      S21_IS_NAN(x) || S21_IS_INF(x))
+        8:    8:    res = x;
+        -:    9:  else {
+      408:   10:    if (x != ceil_x) {
+      408:   11:      if (x > 0) {
+      204:   12:        ceil_x += 1;
+      204:   13:        res = ceil_x;
+      204:   14:      } else if (x < 0 && ceil_x != 0) {
+        4:   15:        res = ceil_x;
+        -:   16:      } else {
+      200:   17:        res = -ceil_x;
+        -:   18:      }
+        -:   19:    }
+        -:   20:  }
+      416:   21:  return res;
+        -:   22:}

@@ -1,0 +1,54 @@
+        -:    0:Source:unit_tests/s21_fmod_test.c
+        -:    1:#include "s21_test.h"
+        -:    2:
+        1:    3:START_TEST(fmodTest1) {
+        1:    4:  double testValueX1 = -8;
+        1:    5:  double testValueY1 = 3;
+        1:    6:  double testValueX2 = -10;
+        1:    7:  double testValueY2 = 2;
+        1:    8:  double testValueX3 = 164.2;
+        1:    9:  double testValueY3 = 0.3;
+       1*:   10:  ck_assert_ldouble_eq_tol(s21_fmod(testValueX1, testValueY1),
+        -:   11:                           fmod(testValueX1, testValueY1), 1e-6);
+       1*:   12:  ck_assert_ldouble_eq_tol(s21_fmod(testValueX2, testValueY2),
+        -:   13:                           fmod(testValueX2, testValueY2), 1e-6);
+       1*:   14:  ck_assert_ldouble_eq_tol(s21_fmod(testValueX3, testValueY3),
+        -:   15:                           fmod(testValueX3, testValueY3), 1e-6);
+       1*:   16:  ck_assert_ldouble_eq_tol(s21_fmod(0, testValueY3), fmod(0, testValueY3),
+        -:   17:                           1e-6);
+       1*:   18:  ck_assert_ldouble_eq_tol(s21_fmod(-0.0, testValueY3), fmod(-0.0, testValueY3),
+        -:   19:                           1e-6);
+        1:   20:}
+        -:   21:END_TEST
+        -:   22:
+        1:   23:START_TEST(fmodTest2) {
+        1:   24:  double testValueX1 = 0;
+        1:   25:  double testValueY1 = 0;
+        1:   26:  double testValueY2 = 0;
+        1:   27:  double testValueX3 = 100;
+        1:   28:  double testValueY3 = -5;
+        1:   29:  double testValueX4 = S21_INF_POSITIVE;
+        1:   30:  double testValueY4 = -5;
+        1:   31:  double testValueX5 = 4;
+        1:   32:  double testValueY5 = S21_NAN;
+       1*:   33:  ck_assert_double_nan(s21_fmod(testValueX1, testValueY1));
+       1*:   34:  ck_assert_double_nan(s21_fmod(testValueY2, testValueY2));
+       1*:   35:  ck_assert_ldouble_eq_tol(s21_fmod(testValueX3, testValueY3),
+        -:   36:                           fmod(testValueX3, testValueY3), 1e-6);
+       1*:   37:  ck_assert_double_nan(s21_fmod(testValueX4, testValueY4));
+       1*:   38:  ck_assert_double_nan(s21_fmod(testValueX5, testValueY5));
+        -:   39:
+       1*:   40:  ck_assert(S21_IS_NAN(s21_fmod(NAN, 5)) == S21_IS_NAN(fmod(NAN, 5)));
+        1:   41:}
+        -:   42:END_TEST
+        -:   43:
+       36:   44:Suite *fmodTest(void) {
+       36:   45:  Suite *s = suite_create("\033[45mFmod test\033[0m");
+       36:   46:  TCase *tc = tcase_create("Fmod test");
+        -:   47:
+       36:   48:  tcase_add_test(tc, fmodTest1);
+       36:   49:  tcase_add_test(tc, fmodTest2);
+        -:   50:
+       36:   51:  suite_add_tcase(s, tc);
+       36:   52:  return s;
+        -:   53:}

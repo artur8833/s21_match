@@ -1,0 +1,46 @@
+        -:    0:Source:unit_tests/s21_sin_test.c
+        -:    1:#include "s21_test.h"
+        -:    2:
+        1:    3:START_TEST(sinTest1) {
+        1:    4:  double step = 0.05;
+      630:    5:  for (double i = -5 * S21_PI; i <= 5 * S21_PI; i += step) {
+     629*:    6:    ck_assert_ldouble_eq_tol(s21_sin(i), sin(i), 1e-6);
+        -:    7:  }
+        1:    8:}
+        -:    9:END_TEST
+        -:   10:
+        1:   11:START_TEST(sinTest2) {
+        1:   12:  int testValue1 = 100;
+        1:   13:  int testValue2 = -3003;
+        1:   14:  double testValue3 = 0.0005;
+        1:   15:  double testValue4 = 0.98439849385;
+        1:   16:  double testValue5 = S21_PI;
+        1:   17:  double testValue6 = -S21_PI;
+        1:   18:  double testValue7 = S21_PI / 2;
+        1:   19:  double testValue8 = -S21_PI / 2;
+        -:   20:
+       1*:   21:  ck_assert_ldouble_eq_tol(s21_sin(testValue1), sin(testValue1), 1e-6);
+       1*:   22:  ck_assert_ldouble_eq_tol(s21_sin(testValue2), sin(testValue2), 1e-6);
+       1*:   23:  ck_assert_ldouble_eq_tol(s21_sin(testValue3), sin(testValue3), 1e-6);
+       1*:   24:  ck_assert_ldouble_eq_tol(s21_sin(testValue4), sin(testValue4), 1e-6);
+       1*:   25:  ck_assert_ldouble_eq_tol(s21_sin(testValue5), sin(testValue5), 1e-6);
+       1*:   26:  ck_assert_ldouble_eq_tol(s21_sin(testValue6), sin(testValue6), 1e-6);
+       1*:   27:  ck_assert_ldouble_eq_tol(s21_sin(testValue7), sin(testValue7), 1e-6);
+       1*:   28:  ck_assert_ldouble_eq_tol(s21_sin(testValue8), sin(testValue8), 1e-6);
+       1*:   29:  ck_assert(S21_IS_NAN(s21_sin(NAN)) == S21_IS_NAN(sin(NAN)));
+       1*:   30:  ck_assert(S21_IS_NAN(s21_sin(INFINITY)) == S21_IS_NAN(sin(INFINITY)));
+       1*:   31:  ck_assert(S21_IS_NAN(s21_sin(-INFINITY)) == S21_IS_NAN(sin(-INFINITY)));
+       1*:   32:  ck_assert(S21_IS_NAN(s21_sin(-1)) == S21_IS_NAN(sin(-1)));
+       1*:   33:  ck_assert(S21_IS_NAN(s21_sin(1)) == S21_IS_NAN(sin(1)));
+        1:   34:}
+        -:   35:END_TEST
+       36:   36:Suite *sinTest(void) {
+       36:   37:  Suite *s = suite_create("\033[45mSin test\033[0m");
+       36:   38:  TCase *tc = tcase_create("Sin test");
+        -:   39:
+       36:   40:  tcase_add_test(tc, sinTest1);
+       36:   41:  tcase_add_test(tc, sinTest2);
+        -:   42:
+       36:   43:  suite_add_tcase(s, tc);
+       36:   44:  return s;
+        -:   45:}

@@ -1,0 +1,25 @@
+        -:    0:Source:unit_tests/s21_atan_test.c
+        -:    1:#include "s21_test.h"
+        -:    2:
+        1:    3:START_TEST(atanTest1) {
+       1*:    4:  ck_assert_ldouble_eq_tol(s21_atan(1.0), atan(1.0), 1e-6);
+       1*:    5:  ck_assert_ldouble_eq_tol(s21_atan(0.1), atan(0.1), 1e-6);
+       1*:    6:  ck_assert_ldouble_eq_tol(s21_atan(-1.0), atan(-1.0), 1e-6);
+       1*:    7:  ck_assert_ldouble_eq_tol(s21_atan(0.0), atan(0.0), 1e-6);
+       1*:    8:  ck_assert_ldouble_eq_tol(s21_atan(1000.0), atan(1000.0), 1e-6);
+       1*:    9:  ck_assert_ldouble_eq_tol(s21_atan(-1000.0), atan(-1000.0), 1e-6);
+       1*:   10:  ck_assert(S21_IS_NAN(s21_atan(NAN)) == S21_IS_NAN(atan(NAN)));
+       1*:   11:  ck_assert(S21_IS_NAN(s21_atan(INFINITY)) == S21_IS_NAN(atan(INFINITY)));
+       1*:   12:  ck_assert(S21_IS_NAN(s21_atan(-INFINITY)) == S21_IS_NAN(atan(-INFINITY)));
+        1:   13:}
+        -:   14:END_TEST;
+        -:   15:
+       36:   16:Suite *atanTest(void) {
+       36:   17:  Suite *s = suite_create("\033[45mAtan test\033[0m");
+       36:   18:  TCase *tc = tcase_create("Atan test");
+        -:   19:
+       36:   20:  tcase_add_test(tc, atanTest1);
+        -:   21:
+       36:   22:  suite_add_tcase(s, tc);
+       36:   23:  return s;
+        -:   24:}

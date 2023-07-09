@@ -1,0 +1,27 @@
+        -:    0:Source:unit_tests/s21_asin_test.c
+        -:    1:#include "s21_test.h"
+        -:    2:
+        1:    3:START_TEST(asinTest1) {
+       1*:    4:  ck_assert_ldouble_eq_tol(s21_asin(1.0), asin(1.0), 1e-6);
+       1*:    5:  ck_assert_ldouble_eq_tol(s21_asin(-1.0), asin(-1.0), 1e-6);
+       1*:    6:  ck_assert_ldouble_eq_tol(s21_asin(0.0), asin(0.0), 1e-6);
+       1*:    7:  ck_assert_ldouble_eq_tol(s21_asin(0.23234), asin(0.23234), 1e-6);
+       1*:    8:  ck_assert_ldouble_eq_tol(s21_asin(-0.23234), asin(-0.23234), 1e-6);
+       1*:    9:  ck_assert_ldouble_eq_tol(s21_asin(0.0002), asin(0.0002), 1e-6);
+       1*:   10:  ck_assert_ldouble_eq_tol(s21_asin(-0.0002), asin(-0.0002), 1e-6);
+       1*:   11:  ck_assert(S21_IS_NAN(s21_asin(NAN)) == S21_IS_NAN(asin(NAN)));
+       1*:   12:  ck_assert(S21_IS_NAN(s21_asin(INFINITY)) == S21_IS_NAN(asin(INFINITY)));
+       1*:   13:  ck_assert(S21_IS_NAN(s21_asin(-INFINITY)) == S21_IS_NAN(asin(-INFINITY)));
+       1*:   14:  ck_assert(S21_IS_NAN(s21_asin(5)) == S21_IS_NAN(asin(5)));
+        1:   15:}
+        -:   16:END_TEST;
+        -:   17:
+       36:   18:Suite *asinTest(void) {
+       36:   19:  Suite *s = suite_create("\033[45mAsin test\033[0m");
+       36:   20:  TCase *tc = tcase_create("Asin test");
+        -:   21:
+       36:   22:  tcase_add_test(tc, asinTest1);
+        -:   23:
+       36:   24:  suite_add_tcase(s, tc);
+       36:   25:  return s;
+        -:   26:}
